@@ -1,3 +1,6 @@
 from django.contrib import admin
+from medicine.models import Medicine, Category, Manufacturer
 
-# Register your models here.
+admin.site.register(Medicine)
+admin.site.register(Category)
+admin.site.register(Manufacturer)
