@@ -1,4 +1,8 @@
 from django.contrib import admin
 from users.models import User
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-admin.site.register(User)
+class UserAdmin(BaseUserAdmin):
+    pass
+
+admin.site.register(User, UserAdmin)

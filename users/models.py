@@ -25,7 +25,7 @@ class UserManager(BaseUserManager):
         return self.create_user(email, username, password, **extra_fields)
 
     def authenticate(self, username_or_email, password):
-        """Authenticate by username or email"""
+        # authenticate by username or email
         try:
             user = self.get(email=username_or_email)
         except ObjectDoesNotExist:
