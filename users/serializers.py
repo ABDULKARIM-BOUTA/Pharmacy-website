@@ -40,7 +40,7 @@ class LogInSerializer(serializers.Serializer):
         user = None
 
         # Try authenticating using username
-        user = authenticate(username=username_or_email, password=password)
+        user = authenticate(username=attrs['username_or_email'], password=attrs['password'])
 
         # If failed, try treating it as an email
         if user is None:

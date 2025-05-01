@@ -170,3 +170,8 @@ if not DEBUG:
     SECURE_HSTS_SECONDS = 31536000  # 1 year
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
+
+AUTHENTICATION_BACKENDS = [
+    'users.backends.EmailOrUsernameBackend',  # your custom backend
+    'django.contrib.auth.backends.ModelBackend',  # fallback
+]
