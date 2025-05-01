@@ -73,30 +73,62 @@
     const apiUrl = form.dataset.url;
 
     form.addEventListener('submit', async function (e) {
-      e.preventDefault();
+    e.preventDefault();
 
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: document.getElementById('username').value,
-          email: document.getElementById('email').value,
-          password: document.getElementById('password').value
-        })
-      });
+    const resBox = document.getElementById('response');
+    resBox.innerHTML = ''; // Clear previous messages
 
-      const result = await response.json();
-      const resBox = document.getElementById('response');
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value
+            })
+        });
 
-      if (response.ok) {
-        resBox.innerHTML = '<p style="color: green;">Registered successfully!</p>';
-        form.reset();
-      } else {
-        resBox.innerHTML = '<p style="color: red;">' + (result.detail || 'Registration failed.') + '</p>';
-      }
-    });
+        const result = await response.json();
+
+        if (response.ok) {
+            resBox.innerHTML = '<p style="color: green;">Registered successfully!</p>';
+            form.reset();
+        } else {
+            // Handle field-specific errors
+            let errorMessages = [];
+
+            if (result.username) {
+                errorMessages.push(result.username[0]);
+            }
+
+            if (result.email) {
+                errorMessages.push(result.email[0]);
+            }
+
+            if (result.password) {
+                errorMessages.push(result.password[0]);
+            }
+
+            // If no field-specific errors, show general error
+            if (errorMessages.length === 0 && result.detail) {
+                errorMessages.push(result.detail);
+            } else if (errorMessages.length === 0) {
+                errorMessages.push('Registration failed. Please try again.');
+            }
+
+            // Display all error messages
+            resBox.innerHTML = errorMessages.map(msg =>
+                `<p style="color: red;">${msg}</p>`
+            ).join('');
+        }
+    } catch (error) {
+        resBox.innerHTML = '<p style="color: red;">Network error. Please try again.</p>';
+    }
+});
+
   </script>
 </body>
 </html>
