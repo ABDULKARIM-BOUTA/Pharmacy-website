@@ -12,4 +12,5 @@ urlpatterns = [
 
     # first party urls
     path('user/', include('users.urls')),
+    path('medicine/', include('medicine.urls')),
 ]
