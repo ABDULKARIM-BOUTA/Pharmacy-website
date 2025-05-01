@@ -129,7 +129,6 @@ REST_FRAMEWORK = {
         'anon': '15/minute',
         'user': '25/minute',
     }
-
 }
 
 SIMPLE_JWT = {
