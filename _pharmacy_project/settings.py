@@ -128,7 +128,7 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATE': {
         'anon': '15/minute',
         'user': '25/minute',
-    }
+    },
 }
 
 SIMPLE_JWT = {
