@@ -46,3 +46,6 @@ class MedicineListPageView(TemplateView):
 
 class MedicineCreatePageView(TemplateView):
     template_name = 'medicine/create.html'
+
+class MedicineDetailPageView(TemplateView):
+    template_name = 'medicine/detail.html'
