@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Medicine List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f7fd;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: #fff;
+            width: 90%;
+            max-width: 600px;
+            margin-top: 60px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            background: #f0f4ff;
+            border-radius: 8px;
+            font-weight: 500;
+            color: #222;
+            transition: background 0.3s ease;
+        }
+
+        li:hover {
+            background: #dbe9ff;
+        }
+
+        .loading, .error {
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Available Medicines</h1>
+        <ul id="medicine-list">
+            <p class="loading" id="loading">Loading...</p>
+        </ul>
+    </div>
+
+    <script>
+        const listEl = document.getElementById('medicine-list');
+        const loadingEl = document.getElementById('loading');
+
+        fetch('/medicine/api/list/')
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to fetch');
+                return response.json();
+            })
+            .then(data => {
+                loadingEl.style.display = 'none';
+              (data.results || []).forEach(med => {
+                const li = document.createElement('li');
+             li.textContent = med.name;
+             listEl.appendChild(li);
+                });
+          if (!data.results || data.results.length === 0) {
+                 listEl.innerHTML = '<p class="loading">No medicines found.</p>';
+                }
+            })
+            .catch(error => {
+                loadingEl.textContent = 'Failed to load medicine list.';
+                console.error('Fetch error:', error);
+            });
+    </script>
+</body>
+</html>
