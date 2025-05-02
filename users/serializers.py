@@ -15,9 +15,13 @@ class SignUpSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(
             email=validated_data['email'],
             username=validated_data['username'],
-            password=validated_data['password']
-        )
+            password=validated_data['password'])
         return user
+
+    def validate_password(self, value):
+        if len(value) < 8:
+            raise serializers.ValidationError("Password must be at least 8 characters long.")
+        return value
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     username_field = 'username'  # We accept "username", but it'll be username OR email
