@@ -61,6 +61,42 @@
     .back-button:hover {
       background-color: #e0e0e0;
     }
+
+    .admin-actions {
+      margin-top: 24px;
+      text-align: center;
+    }
+
+    .admin-actions a,
+    .admin-actions button {
+      margin: 0 10px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 14px;
+      transition: background-color 0.3s;
+      text-decoration: none;
+    }
+
+    .admin-actions a {
+      background-color: #4a90e2;
+      color: white;
+    }
+
+    .admin-actions a:hover {
+      background-color: #357ac9;
+    }
+
+    .admin-actions button {
+      background-color: #e74c3c;
+      color: white;
+    }
+
+    .admin-actions button:hover {
+      background-color: #c0392b;
+    }
   </style>
 </head>
 <body>
@@ -70,11 +106,21 @@
   <h2>Medicine Details</h2>
   <div id="medicine-details"></div>
   <div id="error" class="error" style="display: none;"></div>
+
+  {% if request.user.is_superuser %}
+    <div class="admin-actions">
+      <a href="{% url 'medicine:page-update' pk=pk %}">Update</a>
+      <form id="delete-form" style="display: inline;">
+        <button type="button" onclick="deleteMedicine()">Delete</button>
+      </form>
+    </div>
+  {% endif %}
 </div>
 
 <script>
   const medicineId = {{ pk }};
   const apiUrl = "{% url 'medicine:api-detail' pk=0 %}".replace("0", medicineId);
+  const deleteUrl = "{% url 'medicine:api-delete' pk=0 %}".replace("0", medicineId);
 
   const container = document.getElementById("medicine-details");
   const errorBox = document.getElementById("error");
@@ -122,6 +168,28 @@
       errorBox.style.display = "block";
       errorBox.textContent = "An error occurred while fetching the medicine details.";
     });
+
+  function deleteMedicine() {
+    if (!confirm("Are you sure you want to delete this medicine?")) return;
+
+    fetch(deleteUrl, {
+      method: "DELETE",
+      headers: {
+        "X-CSRFToken": "{{ csrf_token }}",
+      },
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Failed to delete");
+        }
+        alert("Medicine deleted successfully.");
+        window.location.href = "{% url 'medicine:page-list' %}";
+      })
+      .catch(error => {
+        alert("Failed to delete medicine.");
+        console.error(error);
+      });
+  }
 </script>
 
 </body>

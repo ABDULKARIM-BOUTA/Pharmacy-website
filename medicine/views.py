@@ -46,7 +46,4 @@ class MedicineCreatePageView(TemplateView):
     template_name = 'medicine/create.html'
 
 class MedicineUpdatePageView(TemplateView):
-    template_name = 'medicine/update'
-
-class MedicineDeletePageView(TemplateView):
-    template_name = 'medicine/delete'
+    template_name = 'medicine/update.html'

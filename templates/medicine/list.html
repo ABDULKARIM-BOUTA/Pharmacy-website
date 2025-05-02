@@ -33,6 +33,25 @@
             color: #333;
         }
 
+        .create-btn {
+            display: block;
+            width: fit-content;
+            margin: 0 auto 20px auto;
+            background-color: #4a90e2;
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        .create-btn:hover {
+            background-color: #357ac9;
+        }
+
         ul {
             list-style: none;
             padding: 0;
@@ -64,6 +83,11 @@
 <body>
     <div class="container">
         <h1>Available Medicines</h1>
+
+        {% if request.user.is_superuser %}
+            <a href="{% url 'medicine:page-create' %}" class="create-btn">Create New Medicine</a>
+        {% endif %}
+
         <ul id="medicine-list">
             <p class="loading" id="loading">Loading...</p>
         </ul>
@@ -88,7 +112,7 @@
                 results.forEach(med => {
                     const li = document.createElement('li');
                     const link = document.createElement('a');
-                    link.href = `/medicine/${med.pk}/detail/`;  // detail view route
+                    link.href = `/medicine/${med.pk}/detail/`;
                     link.textContent = med.name;
                     li.appendChild(link);
                     listEl.appendChild(li);
