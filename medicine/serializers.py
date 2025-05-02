@@ -10,7 +10,7 @@ class MedicineSerializer(serializers.ModelSerializer):
         queryset=Manufacturer.objects.all(),
         slug_field='name'
     )
-    
+
     class Meta:
         model = Medicine
         fields = ['name', 'price', 'stock_quantity', 'description', 'dosage', 'requires_prescription', 'pk',
