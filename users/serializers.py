@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model, authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
-
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 User = get_user_model()
 
 class SignUpSerializer(serializers.ModelSerializer):
@@ -18,6 +18,43 @@ class SignUpSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
         return user
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    username_field = 'username'  # We accept "username", but it'll be username OR email
+
+    def validate(self, attrs):
+        credentials = {
+            'username': attrs.get('username'),
+            'password': attrs.get('password')
+        }
+
+        if not all(credentials.values()):
+            raise serializers.ValidationError("Must include 'username' and 'password'.")
+
+        user = authenticate(
+            request=self.context.get('request'),
+            username=credentials['username'],
+            password=credentials['password']
+        )
+
+        if not user:
+            raise serializers.ValidationError("Invalid credentials.")
+
+        refresh = self.get_token(user)
+        return {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        }
+
+
+
+
+
+
+
+
+
+
 
 class LogInSerializer(serializers.Serializer):
     username_or_email = serializers.CharField(required=True)

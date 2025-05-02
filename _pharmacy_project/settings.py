@@ -1,6 +1,7 @@
 from pathlib import Path
 import environ
 from datetime import timedelta
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,7 +43,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = '_pharmacy_project.urls'
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -60,7 +60,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = '_pharmacy_project.wsgi.application'
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -83,26 +82,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
-
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-STATIC_URL = 'static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -137,7 +124,6 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'AUTH_HEADER_TYPES': ('Bearer',),
-    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken')
 }
 
 PASSWORD_HASHERS = [
@@ -150,6 +136,11 @@ PASSWORD_HASHERS = [
 AUTH_USER_MODEL = ('users.User')
 REDIRECT_LOGIN_URL = '/'
 REDIRECT_LOGOUT_URL = '/login/'
+
+AUTHENTICATION_BACKENDS = [
+    'users.backends.EmailOrUsernameBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 # Security settings (only in production)
 if not DEBUG:
@@ -170,8 +161,3 @@ if not DEBUG:
     SECURE_HSTS_SECONDS = 31536000  # 1 year
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
-
-AUTHENTICATION_BACKENDS = [
-    'users.backends.EmailOrUsernameBackend',  # your custom backend
-    'django.contrib.auth.backends.ModelBackend',  # fallback
-]

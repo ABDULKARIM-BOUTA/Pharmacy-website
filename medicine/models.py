@@ -23,7 +23,7 @@ class Medicine(models.Model):
     expiration_date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    category = models.ManyToManyField(Category, related_name='category', null=True, blank=True)
+    category = models.ManyToManyField(Category, related_name='category', blank=True)
     manufacturer = models.ForeignKey(Manufacturer, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
