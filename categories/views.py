@@ -1,5 +1,5 @@
 from categories.models import Category
-from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView, RetrieveUpdateAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView, RetrieveUpdateDestroyAPIView
 from categories.serializers import CategorySerializer
 from rest_framework.permissions import IsAdminUser
 from django.views.generic import TemplateView
@@ -15,13 +15,7 @@ class CategoryCreateAPIView(CreateAPIView):
     serializer_class = CategorySerializer
     permission_classes = [IsAdminUser]
 
-class CategoryUpdateAPIView(RetrieveUpdateAPIView):
-    lookup_field = 'pk'
-    serializer_class = CategorySerializer
-    queryset = Category.objects.all()
-    permission_classes = [IsAdminUser]
-
-class CategoryDeleteAPIView(DestroyAPIView):
+class CategoryUpdateDeleteAPIView(RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
@@ -34,8 +28,5 @@ class CategoryListPageView(TemplateView):
 class CategoryCreatePageView(TemplateView):
     template_name = 'categories/create.html'
 
-class CategoryUpdatePageView(TemplateView):
-    template_name = 'categories/Update.html'
-
-class CategoryDeletePageView(TemplateView):
-    template_name = 'categories/Delete.html'
+class CategoryUpdateDeletePageView(TemplateView):
+    template_name = 'categories/update-delete.html'

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Category List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f4f7fd;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: #fff;
+            width: 90%;
+            max-width: 600px;
+            margin-top: 60px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .create-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .create-btn:hover {
+            background-color: #3e8e41;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            background: #f0f4ff;
+            border-radius: 8px;
+            font-weight: 500;
+            color: #222;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        li:hover {
+            background: #dbe9ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .loading, .error {
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Available Categories</h1>
+            <button class="create-btn" onclick="window.location.href='{% url 'categories:page-create' %}'">
+                + Create New
+            </button>
+        </div>
+
+        <ul id="category-list">
+            <p class="loading" id="loading">Loading...</p>
+        </ul>
+    </div>
+
+    <script>
+        const listEl = document.getElementById('category-list');
+        const loadingEl = document.getElementById('loading');
+
+        // Redirect if not superuser (Django must inject this via context if you want client-side only)
+        const isSuperuser = {{ request.user.is_superuser|yesno:"true,false" }};
+        if (!isSuperuser) {
+            alert('You are not authorized to access this page.');
+            window.location.href = "{% url 'medicine:page-list' %}";  // Redirect to another page if not superuser
+        }
+
+        fetch('{% url 'categories:api-list' %}')
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to fetch');
+                return response.json();
+            })
+            .then(data => {
+                loadingEl.style.display = 'none';
+
+                if (!data.results || data.results.length === 0) {
+                    listEl.innerHTML = '<p class="loading">No categories found.</p>';
+                    return;
+                }
+
+                data.results.forEach(category => {
+                    const li = document.createElement('li');
+                    li.textContent = category.name;
+
+                    // Make the entire list item clickable
+                    li.addEventListener('click', () => {
+                        window.location.href = `{% url 'categories:page-update-delete' pk=0 %}`.replace('0', category.id);
+                    });
+
+                    listEl.appendChild(li);
+                });
+            })
+            .catch(error => {
+                loadingEl.textContent = 'Failed to load category list.';
+                console.error('Fetch error:', error);
+            });
+    </script>
+</body>
+</html>
