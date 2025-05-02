@@ -1,11 +1,6 @@
 from django.db import models
 from categories.models import Category
-
-class Manufacturer(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-
-    def __str__(self):
-        return self.name
+from manufacturers.models import Manufacturer
 
 class Medicine(models.Model):
     name = models.CharField(unique=True, max_length=250)

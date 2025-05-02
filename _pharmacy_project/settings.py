@@ -29,7 +29,8 @@ INSTALLED_APPS = [
     # first party apss
     'medicine',
     'users',
-    'categories'
+    'categories',
+    'manufacturers',
 ]
 
 MIDDLEWARE = [
