@@ -1,7 +1,6 @@
 from rest_framework.generics import CreateAPIView
 from django.views.generic import TemplateView
-from rest_framework.views import APIView
-from users.serializers import SignUpSerializer, LogInSerializer
+from users.serializers import SignUpSerializer
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
