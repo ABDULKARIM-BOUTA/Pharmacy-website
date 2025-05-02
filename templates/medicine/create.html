@@ -1,181 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Create Medicine</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: #f4f7fd;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-        }
+  <meta charset="UTF-8">
+  <title>Create Medicine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f4f7fd;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
 
-        .container {
-            background: #fff;
-            width: 90%;
-            max-width: 600px;
-            margin-top: 60px;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        }
+    .container {
+      background: #fff;
+      width: 90%;
+      max-width: 700px;
+      margin-top: 50px;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
 
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 20px;
-        }
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
 
-        form {
-            display: flex;
-            flex-direction: column;
-        }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
 
-        label {
-            font-weight: 600;
-            margin-top: 15px;
-        }
+    label {
+      font-weight: 600;
+      margin-top: 15px;
+    }
 
-        input, textarea, select {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            margin-top: 5px;
-        }
+    input, select, textarea {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-top: 5px;
+    }
 
-        button {
-            margin-top: 20px;
-            padding: 12px;
-            background-color: #4a90e2;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-        }
+    textarea {
+      resize: vertical;
+    }
 
-        button:hover {
-            background-color: #357ac9;
-        }
+    .form-actions {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
 
-        .message {
-            text-align: center;
-            margin-top: 15px;
-            color: green;
-        }
-    </style>
+    button {
+      padding: 12px 18px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .submit-btn {
+      background-color: #4a90e2;
+      color: white;
+    }
+
+    .submit-btn:hover {
+      background-color: #357ac9;
+    }
+
+    .back-btn {
+      background-color: #ccc;
+      color: #333;
+    }
+
+    .back-btn:hover {
+      background-color: #aaa;
+    }
+
+    .error, .success {
+      text-align: center;
+      margin-top: 15px;
+      color: red;
+    }
+
+    .success {
+      color: green;
+    }
+  </style>
 </head>
 <body>
 <div class="container">
-    <h1>Add New Medicine</h1>
-    <form id="create-form">
-        <label>Name</label>
-        <input type="text" name="name" required>
+  <h1>Create New Medicine</h1>
+  <form id="medicine-form">
+    <label>Name</label>
+    <input type="text" name="name" required>
 
-        <label>Price</label>
-        <input type="number" step="0.01" name="price" required>
+    <label>Price</label>
+    <input type="number" step="0.01" name="price" required>
 
-        <label>Stock Quantity</label>
-        <input type="number" name="stock_quantity" required>
+    <label>Stock Quantity</label>
+    <input type="number" name="stock_quantity" required>
 
-        <label>Description</label>
-        <textarea name="description"></textarea>
+    <label>Description</label>
+    <textarea name="description" required></textarea>
 
-        <label>Dosage</label>
-        <input type="text" name="dosage">
+    <label>Dosage</label>
+    <input type="text" name="dosage" required>
 
-        <label>Requires Prescription</label>
-        <select name="requires_prescription">
-            <option value="true">Yes</option>
-            <option value="false">No</option>
-        </select>
+    <label>Requires Prescription</label>
+    <select name="requires_prescription" required>
+      <option value="false">No</option>
+      <option value="true">Yes</option>
+    </select>
 
-        <label>Weight or Count</label>
-        <input type="text" name="weight_or_count">
+    <label>Weight or Count</label>
+    <input type="text" name="weight_or_count" required>
 
-        <label>Expiration Date</label>
-        <input type="date" name="expiration_date">
+    <label>Expiration Date</label>
+    <input type="date" name="expiration_date" required>
 
-        <label>Category</label>
-        <select name="category" id="category-select"></select>
+    <label>Category (optional)</label>
+    <select name="category" id="category-select">
+      <option value="">-- Optional --</option>
+    </select>
 
-        <label>Manufacturer</label>
-        <select name="manufacturer" id="manufacturer-select"></select>
+    <label>Manufacturer (optional)</label>
+    <select name="manufacturer" id="manufacturer-select">
+      <option value="">-- Optional --</option>
+    </select>
 
-        <button type="submit">Create</button>
-        <p class="message" id="message"></p>
-    </form>
+    <div class="form-actions">
+      <button type="button" class="back-btn" onclick="window.location.href='{% url 'medicine:page-list' %}'">Back</button>
+      <button type="submit" class="submit-btn">Create</button>
+    </div>
+
+    <p class="success" id="success-msg"></p>
+    <p class="error" id="error-msg"></p>
+  </form>
 </div>
 
 <script>
-    // Redirect if not superuser (Django must inject this via context if you want client-side only)
-    const isSuperuser = {{ request.user.is_superuser|yesno:"true,false" }};
-    if (!isSuperuser) {
-        alert('You are not authorized to access this page.');
-        window.location.href = "{% url 'medicine:page-list' %}";
-    }
+  const categorySelect = document.getElementById('category-select');
+  const manufacturerSelect = document.getElementById('manufacturer-select');
 
-    // Populate dropdowns
-    const categorySelect = document.getElementById('category-select');
-    const manufacturerSelect = document.getElementById('manufacturer-select');
-
-    fetch('/api/categories/')
-        .then(res => res.json())
-        .then(data => {
-            data.forEach(cat => {
-                const opt = document.createElement('option');
-                opt.value = cat.name;
-                opt.textContent = cat.name;
-                categorySelect.appendChild(opt);
-            });
-        });
-
-    fetch('/api/manufacturers/')
-        .then(res => res.json())
-        .then(data => {
-            data.forEach(manu => {
-                const opt = document.createElement('option');
-                opt.value = manu.name;
-                opt.textContent = manu.name;
-                manufacturerSelect.appendChild(opt);
-            });
-        });
-
-    // Submit form
-    document.getElementById('create-form').addEventListener('submit', function (e) {
-        e.preventDefault();
-        const form = e.target;
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData);
-        data.requires_prescription = data.requires_prescription === "true";
-
-        fetch('{% url "medicine:api-create" %}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': '{{ csrf_token }}'
-            },
-            body: JSON.stringify(data)
-        })
-            .then(res => {
-                if (!res.ok) throw new Error("Failed to create medicine");
-                return res.json();
-            })
-            .then(() => {
-                document.getElementById('message').textContent = "Medicine created successfully!";
-                form.reset();
-            })
-            .catch(error => {
-                alert("Error: " + error.message);
-            });
+  // Prefetch categories
+  fetch('{% url "categories:api-list" %}')
+    .then(res => res.json())
+    .then(data => {
+      (data.results || []).forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.name;
+        option.textContent = item.name;
+        categorySelect.appendChild(option);
+      });
     });
+
+  // Prefetch manufacturers
+  fetch('{% url "manufacturers:api-list" %}')
+    .then(res => res.json())
+    .then(data => {
+      (data.results || []).forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.name;
+        option.textContent = item.name;
+        manufacturerSelect.appendChild(option);
+      });
+    });
+
+  document.getElementById('medicine-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    if (!data.category) delete data.category;
+    if (!data.manufacturer) delete data.manufacturer;
+
+    // Convert boolean string
+    data.requires_prescription = data.requires_prescription === "true";
+
+    fetch('{% url "medicine:api-create" %}', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Medicine Already Exists');
+        return res.json();
+      })
+      .then(() => {
+        window.location.href = "{% url 'medicine:page-list' %}";
+      })
+      .catch(err => {
+        document.getElementById('error-msg').textContent = "Error: " + err.message;
+      });
+  });
 </script>
 </body>
 </html>
