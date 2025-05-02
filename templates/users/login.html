@@ -144,7 +144,7 @@
                     successMessage.style.display = 'block';
                     // Optionally, redirect to home or another page
                     setTimeout(() => {
-                        window.location.href = "{% url 'users:home' %}";
+                        window.location.href = "{% url 'home' %}";
                     }, 2000);
                 } else {
                     showError("Invalid credentials. Please try again.");

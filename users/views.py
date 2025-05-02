@@ -4,8 +4,6 @@ from rest_framework.views import APIView
 from users.serializers import SignUpSerializer, LogInSerializer
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import AllowAny
-from rest_framework.response import Response
-from rest_framework import status
 from rest_framework_simplejwt.views import TokenObtainPairView
 from users.serializers import CustomTokenObtainPairSerializer
 from django.views.decorators.csrf import csrf_exempt
@@ -13,9 +11,6 @@ from django.utils.decorators import method_decorator
 from django.shortcuts import render
 
 User = get_user_model()
-
-def home(request):
-    return render(request, 'users/home.html')  # Render your home template here
 
 class SignUpAPIView(CreateAPIView):
     permission_classes = [AllowAny]
@@ -32,23 +27,5 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 class LogInPageView(TemplateView):
     template_name = 'users/login.html'
 
-
-
-
-
-
-
-
-
-
-
-
-
-class LogInAPIView(APIView):
-    permission_classes = [AllowAny]
-
-    def post(self, request, *args, **kwargs):
-        serializer = LogInSerializer(data=request.data)
-        if serializer.is_valid():
-            return Response(serializer.validated_data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+def home(request):
+    return render(request, 'home.html')

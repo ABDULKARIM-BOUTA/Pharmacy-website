@@ -1,16 +1,12 @@
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
+from users.views import home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    #third party urls
-    # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    # path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
-
     # first party urls
+    path('', home, name='home'),
     path('user/', include('users.urls')),
     path('medicine/', include('medicine.urls')),
 ]
