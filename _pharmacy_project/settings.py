@@ -14,7 +14,6 @@ DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['*']
 
-# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -30,6 +29,7 @@ INSTALLED_APPS = [
     # first party apss
     'medicine',
     'users',
+    'categories'
 ]
 
 MIDDLEWARE = [
@@ -134,8 +134,6 @@ PASSWORD_HASHERS = [
 ]
 
 AUTH_USER_MODEL = ('users.User')
-REDIRECT_LOGIN_URL = '/'
-REDIRECT_LOGOUT_URL = '/login/'
 
 AUTHENTICATION_BACKENDS = [
     'users.backends.EmailOrUsernameBackend',

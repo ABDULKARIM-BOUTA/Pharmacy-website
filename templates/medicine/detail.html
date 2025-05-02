@@ -18,6 +18,7 @@
       border-radius: 8px;
       padding: 24px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      position: relative;
     }
 
     h2 {
@@ -43,11 +44,29 @@
       color: red;
       text-align: center;
     }
+
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background-color: #f0f0f0;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s;
+    }
+
+    .back-button:hover {
+      background-color: #e0e0e0;
+    }
   </style>
 </head>
 <body>
 
 <div class="card">
+  <button class="back-button" onclick="window.history.back()">← Back</button>
   <h2>Medicine Details</h2>
   <div id="medicine-details"></div>
   <div id="error" class="error" style="display: none;"></div>

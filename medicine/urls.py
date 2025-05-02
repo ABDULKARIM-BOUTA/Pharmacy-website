@@ -15,4 +15,6 @@ urlpatterns = [
     path('create/', views.MedicineCreatePageView.as_view(), name='page-create'),
     path('list/', views.MedicineListPageView.as_view(), name='page-list'),
     path('<int:pk>/detail/', views.MedicineDetailPageView.as_view(), name='page-detail'),
+    path('<int:pk>/update/', views.MedicineUpdatePageView.as_view(), name='page-update'),
+    path('<int:pk>/delete/', views.MedicineDeletePageView.as_view(), name='page-delete'),
 ]

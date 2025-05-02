@@ -3,7 +3,6 @@ from medicine.models import Medicine
 from medicine.serializers import MedicineSerializer
 from rest_framework.permissions import IsAdminUser, AllowAny
 from django.views.generic import TemplateView
-from rest_framework_simplejwt.authentication import JWTAuthentication
 
 """API views"""
 class MedicineCreateAPIView(CreateAPIView):
@@ -45,3 +44,9 @@ class MedicineDetailPageView(TemplateView):
 
 class MedicineCreatePageView(TemplateView):
     template_name = 'medicine/create.html'
+
+class MedicineUpdatePageView(TemplateView):
+    template_name = 'medicine/update'
+
+class MedicineDeletePageView(TemplateView):
+    template_name = 'medicine/delete'
