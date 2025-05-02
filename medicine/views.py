@@ -10,10 +10,6 @@ class MedicineCreateAPIView(CreateAPIView):
     queryset = Medicine.objects.all()
     serializer_class = MedicineSerializer
     permission_classes = [IsAdminUser]
-    authentication_classes = [JWTAuthentication]
-
-    def perform_create(self, serializer):
-        serializer.save(created_by=self.request.user)
 
 class MedicineListAPIView(ListAPIView):
     queryset = Medicine.objects.all()
@@ -44,8 +40,8 @@ class MedicineDeleteAPIView(DestroyAPIView):
 class MedicineListPageView(TemplateView):
     template_name = 'medicine/list.html'
 
-class MedicineCreatePageView(TemplateView):
-    template_name = 'medicine/create.html'
-
 class MedicineDetailPageView(TemplateView):
     template_name = 'medicine/detail.html'
+
+class MedicineCreatePageView(TemplateView):
+    template_name = 'medicine/create.html'

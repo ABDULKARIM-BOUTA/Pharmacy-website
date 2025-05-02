@@ -1,10 +1,16 @@
 from rest_framework import serializers
-from medicine.models import Medicine
+from medicine.models import Medicine, Category, Manufacturer
 
 class MedicineSerializer(serializers.ModelSerializer):
-    category = serializers.StringRelatedField()
-    manufacturer = serializers.StringRelatedField()
-
+    category = serializers.SlugRelatedField(
+        queryset=Category.objects.all(),
+        slug_field='name'
+    )
+    manufacturer = serializers.SlugRelatedField(
+        queryset=Manufacturer.objects.all(),
+        slug_field='name'
+    )
+    
     class Meta:
         model = Medicine
         fields = ['name', 'price', 'stock_quantity', 'description', 'dosage', 'requires_prescription', 'pk',
