@@ -22,6 +22,7 @@ class ManufacturerUpdateDeleteAPIView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAdminUser]
 
 # Templates Views
+
 class ManufacturerListPageView(TemplateView):
     template_name = 'manufacturer/list.html'
 
