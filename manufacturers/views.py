@@ -3,6 +3,7 @@ from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDe
 from manufacturers.serializers import ManufacturerSerializer
 from rest_framework.permissions import IsAdminUser
 from django.views.generic import TemplateView
+from django.contrib.auth.mixins import UserPassesTestMixin
 
 # API views
 class ManufacturerListAPIView(ListAPIView):
@@ -23,11 +24,23 @@ class ManufacturerUpdateDeleteAPIView(RetrieveUpdateDestroyAPIView):
 
 # Templates Views
 
-class ManufacturerListPageView(TemplateView):
+class ManufacturerListPageView(UserPassesTestMixin, TemplateView):
     template_name = 'manufacturer/list.html'
+    raise_exception = True
 
-class ManufacturerCreatePageView(TemplateView):
+    def test_func(self):
+        return self.request.user.is_superuser
+
+class ManufacturerCreatePageView(UserPassesTestMixin, TemplateView):
     template_name = 'manufacturer/create.html'
+    raise_exception = True
 
-class ManufacturerUpdateDeletePageView(TemplateView):
+    def test_func(self):
+        return self.request.user.is_superuser
+
+class ManufacturerUpdateDeletePageView(UserPassesTestMixin, TemplateView):
     template_name = 'manufacturer/update-delete.html'
+    raise_exception = True
+
+    def test_func(self):
+        return self.request.user.is_superuser

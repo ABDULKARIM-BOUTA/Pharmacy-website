@@ -3,6 +3,7 @@ from medicine.models import Medicine
 from medicine.serializers import MedicineSerializer
 from rest_framework.permissions import IsAdminUser, AllowAny
 from django.views.generic import TemplateView
+from django.contrib.auth.mixins import UserPassesTestMixin
 
 """API views"""
 class MedicineCreateAPIView(CreateAPIView):
@@ -43,8 +44,16 @@ class MedicineListPageView(TemplateView):
 class MedicineDetailPageView(TemplateView):
     template_name = 'medicine/detail.html'
 
-class MedicineCreatePageView(TemplateView):
+class MedicineCreatePageView(UserPassesTestMixin, TemplateView):
     template_name = 'medicine/create.html'
+    raise_exception = True
 
-class MedicineUpdatePageView(TemplateView):
+    def test_func(self):
+        return self.request.user.is_superuser
+
+class MedicineUpdatePageView(UserPassesTestMixin, TemplateView):
     template_name = 'medicine/update.html'
+    raise_exception = True
+
+    def test_func(self):
+        return self.request.user.is_superuser
