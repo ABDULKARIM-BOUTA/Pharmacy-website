@@ -97,12 +97,30 @@
     .admin-actions button:hover {
       background-color: #c0392b;
     }
+    .back-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    border: 1px solid transparent;
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+.back-link:hover {
+    color: #1d6fa5;
+    background-color: #eef6fb;
+    border-color: #d6eaf8;
+    text-decoration: none;
+}
   </style>
 </head>
 <body>
 
 <div class="card">
-  <button class="back-button" onclick="window.history.back()">← Back</button>
+<a href="{% url 'medicine:page-list' %}" class="back-link">← Back to Medicines List</a>
   <h2>Medicine Details</h2>
   <div id="medicine-details"></div>
   <div id="error" class="error" style="display: none;"></div>

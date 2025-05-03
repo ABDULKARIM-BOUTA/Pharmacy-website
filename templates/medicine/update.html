@@ -1,85 +1,221 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Update Medicine</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f4f7fd;
-            margin: 0;
-            padding: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-        }
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 700px;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        form label {
-            font-weight: 500;
-            display: block;
-            margin-top: 15px;
-        }
-        input, textarea, select {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 14px;
-        }
-        button {
-            margin-top: 20px;
-            width: 100%;
-            background-color: #4f46e5;
-            color: white;
-            padding: 12px;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #4338ca;
-        }
-        .back-btn {
-            display: inline-block;
-            margin-bottom: 20px;
-            background: #e5e7eb;
-            padding: 8px 14px;
-            border-radius: 6px;
-            text-decoration: none;
-            color: #111827;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Update Medicine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f3f4f6;
+      padding: 40px;
+    }
+    .card {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 15px;
+      box-sizing: border-box;
+    }
+    .btn {
+      padding: 12px 20px;
+      border: none;
+      background: #3498db;
+      color: white;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 20px;
+      width: 100%;
+    }
+    .btn:hover {
+      background: #2980b9;
+    }
+    .message {
+      padding: 10px;
+      margin-top: 20px;
+      border-radius: 5px;
+      text-align: center;
+      display: none;
+    }
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+      }
+      .back-link {
+  display: block;
+  margin-top: 20px;
+  text-align: center;
+  color: #3498db;
+  text-decoration: none;
+  font-weight: 500;
+}
+.back-link:hover {
+  text-decoration: underline;
+}
+
+  </style>
 </head>
 <body>
-<div class="container">
-    <a href="{% url 'medicine:page-detail' pk=medicine.pk %}" class="back-btn">← Back to Details</a>
-    <h1>Update Medicine</h1>
+  <div class="card">
+    <h2>Update Medicine</h2>
+    <div id="message" class="message"></div>
 
-    {% if user.is_superuser %}
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Update Medicine</button>
-        </form>
-    {% else %}
-        <p style="text-align:center; color:red;">Only administrators can update medicines.</p>
-    {% endif %}
-</div>
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" id="name">
+    </div>
+
+    <div class="form-group">
+      <label for="price">Price</label>
+      <input type="number" id="price" step="0.01">
+    </div>
+
+    <div class="form-group">
+      <label for="stock_quantity">Stock Quantity</label>
+      <input type="number" id="stock_quantity">
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="dosage">Dosage</label>
+      <input type="text" id="dosage">
+    </div>
+
+    <div class="form-group">
+      <label for="requires_prescription">Requires Prescription</label>
+      <select id="requires_prescription">
+        <option value="true">Yes</option>
+        <option value="false">No</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="weight_or_count">Weight or Count</label>
+      <input type="text" id="weight_or_count">
+    </div>
+
+    <div class="form-group">
+      <label for="expiration_date">Expiration Date</label>
+      <input type="date" id="expiration_date">
+    </div>
+
+    <button class="btn" onclick="updateMedicine()">Update</button>
+
+      <a href="{% url 'medicine:page-list' %}" class="back-link">← Back to Medicines List</a>
+
+  </div>
+
+  <script>
+    const medicineId = {{ pk }};
+    const apiUrl = "{% url 'medicine:api-update' pk=0 %}".replace("0", medicineId);
+    const messageEl = document.getElementById('message');
+
+    function showMessage(text, type) {
+      messageEl.textContent = text;
+      messageEl.className = `message ${type}`;
+      messageEl.style.display = "block";
+    }
+
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let cookie of cookies) {
+          cookie = cookie.trim();
+          if (cookie.startsWith(name + "=")) {
+            cookieValue = decodeURIComponent(cookie.slice(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+    // Load existing data
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("name").value = data.name || "";
+        document.getElementById("price").value = data.price || "";
+        document.getElementById("stock_quantity").value = data.stock_quantity || "";
+        document.getElementById("description").value = data.description || "";
+        document.getElementById("dosage").value = data.dosage || "";
+        document.getElementById("requires_prescription").value = data.requires_prescription ? "true" : "false";
+        document.getElementById("weight_or_count").value = data.weight_or_count || "";
+        document.getElementById("expiration_date").value = data.expiration_date || "";
+      })
+      .catch(err => showMessage("Failed to load medicine data", "error"));
+
+    function updateMedicine() {
+      const payload = {
+        name: document.getElementById("name").value,
+        price: document.getElementById("price").value,
+        stock_quantity: document.getElementById("stock_quantity").value,
+        description: document.getElementById("description").value,
+        dosage: document.getElementById("dosage").value,
+        requires_prescription: document.getElementById("requires_prescription").value === "true",
+        weight_or_count: document.getElementById("weight_or_count").value,
+        expiration_date: document.getElementById("expiration_date").value,
+      };
+
+      fetch(apiUrl, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCookie("csrftoken")
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(response => {
+        if (!response.ok) {
+          return response.json().then(data => {
+            throw new Error(data.detail || "Update failed");
+          });
+        }
+        return response.json();
+      })
+.then(data => {
+        showMessage('Medicine updated successfully! Redirecting...', 'success');
+        setTimeout(() => {
+            window.location.href = `/medicine/${medicineId}/detail/`;
+        }, 1500);
+    })
+    .catch(error => {
+        showMessage(error.message, 'error');
+        console.error('Error:', error);
+    });
+}
+  </script>
 </body>
 </html>

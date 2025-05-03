@@ -32,6 +32,7 @@ class MedicineDeleteAPIView(DestroyAPIView):
     serializer_class = MedicineSerializer
     queryset = Medicine.objects.all()
     permission_classes = [IsAdminUser]
+
 #------------------------------------------------
 
 """Templates views"""
