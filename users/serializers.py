@@ -23,7 +23,7 @@ class SignUpSerializer(serializers.ModelSerializer):
         return value
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-    username_field = 'username'  # We accept "username", but it'll be username OR email
+    username_field = 'username'
 
     def validate(self, attrs):
         credentials = {

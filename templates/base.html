@@ -1,15 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>{% block title %}My App{% endblock %}</title>
-  <style>
-    body { font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 2rem; }
-    .form-container { background: #f9f9f9; padding: 2rem; border-radius: 8px; box-shadow: 0 0 10px #ddd; }
-    input, button { display: block; width: 100%; margin-bottom: 1rem; padding: 0.5rem; }
-  </style>
-</head>
-<body>
-  {% block content %}{% endblock %}
-</body>
-</html>
+<header style="
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: sans-serif;
+">
+  <div>
+    <a href="/" style="margin-right: 1.5rem; text-decoration: none; color: #333;">🏠 Home</a>
+    <a href="{% url 'medicine:page-list' %}" style="margin-right: 1.5rem; text-decoration: none; color: #333;">💊 Medicines</a>
+    <a href="{% url 'manufacturers:page-list' %}" style="margin-right: 1.5rem; text-decoration: none; color: #333;">🏭 Manufacturers</a>
+    <a href="{% url 'categories:page-list' %}" style="margin-right: 1.5rem; text-decoration: none; color: #333;">📂 Categories</a>
+    <a href="{% url 'carts:page-cart' %}" style="margin-right: 1.5rem; text-decoration: none; color: #333;">🛒 Cart</a>
+  </div>
+
+  <div id="auth-links">
+    <!-- Replaced dynamically by JS -->
+  </div>
+</header>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const authLinks = document.getElementById('auth-links');
+    const access = localStorage.getItem('access');
+    const username = localStorage.getItem('username');
+
+    if (access && username) {
+      authLinks.innerHTML = `
+        <span style="margin-right: 1rem; color: #333;">👤 ${username}</span>
+        <a href="#" style="text-decoration: none; color: #e74c3c;" onclick="logout()">🚪 Logout</a>
+      `;
+    } else {
+      authLinks.innerHTML = `
+        <a href="{% url 'users:login-page' %}" style="margin-right: 1rem; text-decoration: none; color: #3498db;">🔐 Login</a>
+        <a href="{% url 'users:signup-page' %}" style="text-decoration: none; color: #2ecc71;">📝 Signup</a>
+      `;
+    }
+  });
+
+  function logout() {
+    localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
+    localStorage.removeItem('username');
+    window.location.href = "{% url 'users:login-page' %}";
+  }
+</script>
