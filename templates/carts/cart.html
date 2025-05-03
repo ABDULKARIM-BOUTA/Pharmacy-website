@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f3f4f6;
+        }
+        .cart-container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .cart-total {
+            text-align: right;
+            font-size: 1.2em;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        .checkout-btn {
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        .checkout-btn:hover {
+            background-color: #3e8e41;
+        }
+        .empty-cart {
+            text-align: center;
+            color: #666;
+            padding: 30px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="cart-container">
+        <h1>Your Shopping Cart</h1>
+        <div id="cart-items">
+            <!-- Will be populated by JavaScript -->
+            <p class="empty-cart">Loading cart...</p>
+        </div>
+        <div class="cart-total">
+            Total: $<span id="cart-total">0.00</span>
+        </div>
+        <a href="{% url 'orders:checkout' %}" class="checkout-btn">Proceed to Checkout</a>
+    </div>
+
+    <script>
+        fetch('{% url "carts:api-detail" %}')
+            .then(response => response.json())
+            .then(cart => {
+                const container = document.getElementById('cart-items');
+                container.innerHTML = '';
+
+                if (cart.items.length === 0) {
+                    container.innerHTML = '<p class="empty-cart">Your cart is empty</p>';
+                    return;
+                }
+
+                cart.items.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'cart-item';
+                    itemDiv.innerHTML = `
+                        <div>
+                            <h3>${item.medicine.name}</h3>
+                            <p>Price: $${item.medicine.price}</p>
+                        </div>
+                        <div>
+                            <p>Quantity: ${item.quantity}</p>
+                            <p>Total: $${item.total_price}</p>
+                        </div>
+                    `;
+                    container.appendChild(itemDiv);
+                });
+
+                document.getElementById('cart-total').textContent = cart.total_price;
+            })
+            .catch(error => {
+                document.getElementById('cart-items').innerHTML =
+                    '<p class="empty-cart">Error loading cart. Please try again.</p>';
+                console.error('Error:', error);
+            });
+    </script>
+</body>
+</html>

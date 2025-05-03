@@ -97,33 +97,124 @@
     .admin-actions button:hover {
       background-color: #c0392b;
     }
-    .back-link {
-    display: inline-block;
-    margin-top: 20px;
-    color: #3498db;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s ease;
-    border: 1px solid transparent;
-    padding: 8px 12px;
-    border-radius: 6px;
-}
 
-.back-link:hover {
-    color: #1d6fa5;
-    background-color: #eef6fb;
-    border-color: #d6eaf8;
-    text-decoration: none;
-}
+    .back-link {
+      display: inline-block;
+      margin-top: 20px;
+      color: #3498db;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+      border: 1px solid transparent;
+      padding: 8px 12px;
+      border-radius: 6px;
+    }
+
+    .back-link:hover {
+      color: #1d6fa5;
+      background-color: #eef6fb;
+      border-color: #d6eaf8;
+      text-decoration: none;
+    }
+
+    /* New Add to Cart Section Styles */
+    .cart-actions {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+    }
+
+    .cart-actions h3 {
+      margin-bottom: 15px;
+      color: #333;
+      font-size: 1.1em;
+    }
+
+    .cart-controls {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .quantity-selector {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .quantity-selector label {
+      font-weight: 600;
+      color: #555;
+      margin: 0;
+    }
+
+    .quantity-selector input {
+      padding: 8px 12px;
+      width: 70px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-family: Arial, sans-serif;
+    }
+
+    .cart-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .cart-button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .add-to-cart {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .add-to-cart:hover {
+      background-color: #3e8e41;
+    }
+
+    .view-cart {
+      background-color: #2196F3;
+      color: white;
+    }
+
+    .view-cart:hover {
+      background-color: #0b7dda;
+    }
   </style>
 </head>
 <body>
 
 <div class="card">
-<a href="{% url 'medicine:page-list' %}" class="back-link">← Back to Medicines List</a>
+  <a href="{% url 'medicine:page-list' %}" class="back-link">← Back to Medicines List</a>
   <h2>Medicine Details</h2>
   <div id="medicine-details"></div>
   <div id="error" class="error" style="display: none;"></div>
+
+  <!-- New Add to Cart Section -->
+  <div class="cart-actions">
+    <h3>Add to Cart</h3>
+    <div class="cart-controls">
+      <div class="quantity-selector">
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" min="1" max="100" value="1">
+      </div>
+      <div class="cart-buttons">
+        <button onclick="addToCart()" class="cart-button add-to-cart">Add to Cart</button>
+        <a href="{% url 'carts:cart' %}" class="cart-button view-cart">View Cart</a>
+      </div>
+    </div>
+  </div>
 
   {% if request.user.is_superuser %}
     <div class="admin-actions">
@@ -186,6 +277,36 @@
       errorBox.style.display = "block";
       errorBox.textContent = "An error occurred while fetching the medicine details.";
     });
+
+  function addToCart() {
+    const quantity = parseInt(document.getElementById('quantity').value);
+    if (quantity < 1) {
+      alert('Please enter a valid quantity');
+      return;
+    }
+
+    fetch('{% url "carts:api-add-to-cart" %}', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": "{{ csrf_token }}"
+      },
+      body: JSON.stringify({
+        medicine_id: medicineId,
+        quantity: quantity
+      })
+    })
+    .then(response => {
+      if (!response.ok) throw new Error("Failed to add to cart");
+      return response.json();
+    })
+    .then(data => {
+      alert('Added to cart successfully!');
+    })
+    .catch(error => {
+      alert('Error: ' + error.message);
+    });
+  }
 
   function deleteMedicine() {
     if (!confirm("Are you sure you want to delete this medicine?")) return;
