@@ -23,7 +23,7 @@ class OrderSerializer(serializers.ModelSerializer):
         fields = ['id', 'items', 'user', 'user_id', 'address', 'created_at',
                   'update_at', 'status', 'total_amount', 'payment_method']
 
-        read_only_fields = ['created_at', 'updated_at', 'total_amount']
+        read_only_fields = ['user','user_id', 'created_at', 'updated_at', 'total_amount', 'status']
 
     def create(self, validated_data):
         items_data = validated_data.pop('items')

@@ -24,7 +24,6 @@ class OrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 
     def perform_update(self, serializer):
         instance = serializer.save()
-        # Recalculate total_amount if items change
         if 'items' in serializer.validated_data:
             total = sum(item.quantity * item.price for item in instance.items.all())
             instance.total_amount = total

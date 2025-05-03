@@ -19,6 +19,7 @@ class Order(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     address = models.TextField()
+    items = models.ManyToManyField('medicine.Medicine', through='OrderItem')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     status = models.CharField(choices=STATUS_CHOICES, default='pending', max_length=20)
