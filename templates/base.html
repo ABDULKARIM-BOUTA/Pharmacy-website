@@ -7,23 +7,37 @@
   align-items: center;
   font-family: sans-serif;
 ">
-  <div>
+  <div id="nav-links">
+    <!-- Basic links shown to everyone -->
     <a href="{% url 'medicine:page-list' %}" style="margin-right: 1.5rem; text-decoration: none; color: #333;">Medicines</a>
-    <a href="{% url 'manufacturers:page-list' %}" style="margin-right: 1.5rem; text-decoration: none; color: #333;">Manufacturers</a>
-    <a href="{% url 'categories:page-list' %}" style="margin-right: 1.5rem; text-decoration: none; color: #333;">Categories</a>
     <a href="{% url 'carts:page-cart' %}" style="margin-right: 1.5rem; text-decoration: none; color: #333;">Cart</a>
+
+    <!-- Superuser-only links (will be added by JavaScript if user is superuser) -->
   </div>
 
   <div id="auth-links">
+    <!-- Auth links will be populated by JavaScript -->
   </div>
 </header>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
+    const navLinks = document.getElementById('nav-links');
     const authLinks = document.getElementById('auth-links');
     const access = localStorage.getItem('access');
     const username = localStorage.getItem('username');
+    const isSuperuser = localStorage.getItem('is_superuser') === 'true';
 
+    // Add superuser links if applicable
+    if (isSuperuser) {
+      const superuserLinks = `
+        <a href="{% url 'manufacturers:page-list' %}" style="margin-right: 1.5rem; text-decoration: none; color: #333;">Manufacturers</a>
+        <a href="{% url 'categories:page-list' %}" style="margin-right: 1.5rem; text-decoration: none; color: #333;">Categories</a>
+      `;
+      navLinks.innerHTML += superuserLinks;
+    }
+
+    // Set auth links
     if (access && username) {
       authLinks.innerHTML = `
         <span style="margin-right: 1rem; color: #333;">👤 ${username}</span>
@@ -41,6 +55,7 @@
     localStorage.removeItem('access');
     localStorage.removeItem('refresh');
     localStorage.removeItem('username');
+    localStorage.removeItem('is_superuser');
     window.location.href = "{% url 'users:login-page' %}";
   }
 </script>
