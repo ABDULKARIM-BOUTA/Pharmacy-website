@@ -8,15 +8,13 @@
   font-family: sans-serif;
 ">
   <div>
-    <a href="/" style="margin-right: 1.5rem; text-decoration: none; color: #333;">🏠 Home</a>
-    <a href="{% url 'medicine:page-list' %}" style="margin-right: 1.5rem; text-decoration: none; color: #333;">💊 Medicines</a>
-    <a href="{% url 'manufacturers:page-list' %}" style="margin-right: 1.5rem; text-decoration: none; color: #333;">🏭 Manufacturers</a>
-    <a href="{% url 'categories:page-list' %}" style="margin-right: 1.5rem; text-decoration: none; color: #333;">📂 Categories</a>
-    <a href="{% url 'carts:page-cart' %}" style="margin-right: 1.5rem; text-decoration: none; color: #333;">🛒 Cart</a>
+    <a href="{% url 'medicine:page-list' %}" style="margin-right: 1.5rem; text-decoration: none; color: #333;">Medicines</a>
+    <a href="{% url 'manufacturers:page-list' %}" style="margin-right: 1.5rem; text-decoration: none; color: #333;">Manufacturers</a>
+    <a href="{% url 'categories:page-list' %}" style="margin-right: 1.5rem; text-decoration: none; color: #333;">Categories</a>
+    <a href="{% url 'carts:page-cart' %}" style="margin-right: 1.5rem; text-decoration: none; color: #333;">Cart</a>
   </div>
 
   <div id="auth-links">
-    <!-- Replaced dynamically by JS -->
   </div>
 </header>
 
